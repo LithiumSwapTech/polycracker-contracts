@@ -10,7 +10,7 @@ contract PLithToken is ERC20('PRE-LITHIUM', 'PLITHIUM'), ReentrancyGuard {
 
     address public constant feeAddress = 0x3a1D1114269d7a786C154FE5278bF5b1e3e20d31;
 
-    uint256 public salePriceE35 = 435 * (10 ** 33);
+    uint256 public salePriceE35 = 1666 * (10 ** 31);
 
     uint256 public constant plithMaximumSupply = 30 * (10 ** 3) * (10 ** 18);
 
@@ -43,8 +43,8 @@ contract PLithToken is ERC20('PRE-LITHIUM', 'PLITHIUM'), ReentrancyGuard {
         require(block.number < endBlock, "presale has ended, come back next time!");
         require(plithRemaining > 0, "No more plith remaining! Come back next time!");
         require(IERC20(address(this)).balanceOf(address(this)) > 0, "No more plith left! Come back next time!");
-        require(msg.value > 0, "not enough bnb provided");
-        require(msg.value <= 3e22, "too much bnb provided");
+        require(msg.value > 0, "not enough matic provided");
+        require(msg.value <= 3e22, "too much matic provided");
         require(userPlithTally[msg.sender] < maxPlithPurchase, "user has already purchased too much plith");
 
         uint256 originalPlithAmount = (msg.value * salePriceE35) / 1e35;
@@ -102,9 +102,9 @@ contract PLithToken is ERC20('PRE-LITHIUM', 'PLITHIUM'), ReentrancyGuard {
     }
 
     function setSalePriceE35(uint256 _newSalePriceE35) external onlyOwner {
-        require(block.number < startBlock - (oneHourMatic * 12), "cannot change price 12 hours before start block");
-        require(_newSalePriceE35 >= 25 * (10 ** 34), "new price can't be below 2.5 matic");
-        require(_newSalePriceE35 <= 100 * (10 ** 34), "new price can't be above 10 matic");
+        require(block.number < startBlock - (oneHourMatic * 4), "cannot change price 4 hours before start block");
+        require(_newSalePriceE35 >= 2 * (10 ** 33), "new price can't too low");
+        require(_newSalePriceE35 <= 4 * (10 ** 34), "new price can't too high");
         salePriceE35 = _newSalePriceE35;
 
         emit salePriceE35Changed(salePriceE35);
